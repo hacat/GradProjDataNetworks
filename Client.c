@@ -43,13 +43,33 @@ int sendToServer(char* buffer) {
 }
 
 int main(int argc, char* argv[]) {
-	char buf[MAXBUF];
+
     int returnStatusq;
-    if (argc < 3)
+    /**if (argc < 3)
     {
        fprintf(stderr, "Usage: %s <ip address> <port>\n", argv[0]);
        exit(1);
+    }**/
+    char clientPortNumber[256];    
+    char authenticationServerIPAddress[256];
+    char authenticationServerPortNumber[256];
+    char neighborRouterIPAddress[256];
+    char neighborRouterPortNumber[256];
+    char nameOfDestinationHostMachine[256];
+ 
+    int returnStatus;
+    //make sure all ports are filled.  
+    if (argc < 7)
+    {
+       fprintf(stderr, "Usage: %s <clientPort> <serverIP> <serverPort> <routerIP> <routerPort> <destClientName>\n", argv[0]);
+       exit(1);
     }
+    strcpy(clientPortNumber, argv[1]);    
+    strcpy(authenticationServerIPAddress, argv[2]); 
+    strcpy(authenticationServerPortNumber, argv[3]);
+    strcpy(neighborRouterIPAddress, argv[4]);
+    strcpy(neighborRouterPortNumber, argv[5]);
+    strcpy(nameOfDestinationHostMachine, argv[6]);
 
  /* create a socket */
     udpSocket = socket(AF_INET, SOCK_DGRAM, 0);
@@ -76,8 +96,8 @@ int main(int argc, char* argv[]) {
     /* server address */
     /* use the command-line arguments */
     udpServer.sin_family = AF_INET;
-    udpServer.sin_addr.s_addr = inet_addr(argv[1]);
-    udpServer.sin_port = htons(atoi(argv[2]));
+    udpServer.sin_addr.s_addr = inet_addr(authenticationServerIPAddress);
+    udpServer.sin_port = htons(atoi(clientPortNumber));
 
     /* set up the message to be sent to the server */
     //user authentication

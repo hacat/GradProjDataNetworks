@@ -1,0 +1,8 @@
+gpel8.cs.ou.edu 129.15.78.11 5582
+gpel9.cs.ou.edu 129.15.78.12 5582
+gpel10.cs.ou.edu 129.15.78.13 5582
+gpel11.cs.ou.edu 129.15.78.14 5582
+gpel12.cs.ou.edu 129.15.78.15 5582
+gpel13.cs.ou.edu 129.15.78.16 5582
+localhost 127.0.0.1 5581
+

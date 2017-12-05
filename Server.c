@@ -17,7 +17,16 @@ int returnStatus;
 int addrlen;
 struct sockaddr_in udpServer, udpClient;
 char buf[MAXBUF];
-
+//This method was made out of convenience for the comparison of strings
+void remove_new_line(char* string)
+{
+  size_t length;
+  if( (length =strlen(string) ) >0)
+  {
+       if(string[length-1] == '\n')
+                string[length-1] ='\0';
+  }
+}
 int receiveFromClient(char* buf){
    addrlen = sizeof(udpClient);
    returnStatus = recvfrom(udpSocket, buf, MAXBUF, 0, (struct sockaddr*)&udpClient, &addrlen);
@@ -187,24 +196,28 @@ int main(int argc, char* argv[]) {
 	receiveFromClient(inputDestinationClient);
 	int iterator = 0;
 	int index = 0;
+	remove_new_line(inputDestinationClient);
 	printf("input:'%s'\n", inputDestinationClient);
 	for(iterator = 0; destClientName[iterator] != '\0'; iterator++){
-		printf("iterator:'%s'\n", destClientName[iterator]);
-		if(strcmp(strtok(inputDestinationClient,"\n"), destClientName[iterator])==0){
+		//printf("iterator:'%s'\n", destClientName[iterator]);
+		if(strcmp(inputDestinationClient, destClientName[iterator])==0){
 			index = iterator;
 			//printf("%d", iterator);
-			printf("'%s'", destClientIP[index]);
+			//printf("'%s'", destClientIP[index]);
 			sendToClient("correct");
 			strcpy(inputDestinationClientIP, destClientIP[index]);
 			sendToClient(inputDestinationClientIP);
 			strcpy(inputDestinationClientPortNumber, destClientPortNumber[index]);
 			sendToClient(inputDestinationClientPortNumber);
 			validDestinationClient = 1;
-		} else {
-			sendToClient("incorrect");
-		}
-   	 } 
+		} 
+   	} 
+	if(!validDestinationClient){
+		sendToClient("incorrect");
+	}
     }
+/******Send message to a neighbor router********/
+
     /*cleanup */
     close(udpSocket);
     return 0;
